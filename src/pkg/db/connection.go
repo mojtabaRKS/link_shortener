@@ -6,7 +6,7 @@ import (
 )
 
 type Connection struct {
-	conn *gorm.DB
+	Conn *gorm.DB
 }
 
 func createConnection(cnfg *Config) *Connection {
@@ -18,13 +18,13 @@ func createConnection(cnfg *Config) *Connection {
 	}
 
 	return &Connection{
-		conn: db,
+		Conn: db,
 	}
 }
 
-func Load() {
+func (c *Connection) Load() *Connection {
 	cnfgInstance := Config{}
 	cnfg := *cnfgInstance.bootCnfg()
 
-	createConnection(&cnfg)
+	return createConnection(&cnfg)
 }
