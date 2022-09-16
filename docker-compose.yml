@@ -16,6 +16,8 @@ services:
         GROUP_ID: $GROUP_ID
         DOMAIN_DIR: $DOMAIN_DIR
     working_dir: $DOMAIN_DIR
+    depends_on:
+      - db
     volumes:
       - ./src:$DOMAIN_DIR
     command: >
@@ -32,7 +34,7 @@ services:
     ports:
       - '${POSTGRES_PORT}:5432'
     volumes: 
-      - db:/var/lib/postgresql/data
+      - ./db/data:/var/lib/postgresql/data
 volumes:
   db:
     driver: local
