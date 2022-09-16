@@ -1,27 +1,44 @@
 package webserver
 
 import (
+	"fmt"
+	"net/http"
 	"os"
 
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
+	"github.com/gorilla/mux"
+	"github.com/mojtabaRKS/link_shortener/pkg/db"
+	"github.com/mojtabaRKS/link_shortener/pkg/env"
+	log "github.com/sirupsen/logrus"
+	"gorm.io/gorm"
 )
 
-func RunServer(routesHandler func(r *gin.Engine) *gin.Engine, portNo string) {
-	//setLogFiles
-	gin.SetMode(os.Getenv("APP_ENV"))
-	apiRouter := gin.Default()
-	setMiddlewares(apiRouter)
-	routesHandler(apiRouter)
-	logrus.Info("Starting HTTP server")
-
-	err := apiRouter.Run(":" + portNo)
-	if err != nil {
-		panic(err)
-	}
+type App struct {
+	DB     *gorm.DB
+	Router *mux.Router
 }
 
-func setMiddlewares(r *gin.Engine) {
-	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
+func init() {
+	// first we load environment variables
+	env.Load()
+}
+
+func (app *App) Initilize() {
+	// create database instance
+	connection := db.Connection{}
+	app.DB = connection.Load().Conn
+	// create database schema
+	app.Migrate()
+	// create http request handler
+	app.Router = mux.NewRouter()
+	// load routes
+	app.InitilizeRoutes()
+}
+
+func (app *App) RunServer() {
+
+	portNo := fmt.Sprintf(":%s", os.Getenv("APP_PORT"))
+	log.Println(fmt.Sprintf("Starting HTTP server on port %s...", portNo))
+
+	log.Fatal(http.ListenAndServe(portNo, app.Router))
+
 }
