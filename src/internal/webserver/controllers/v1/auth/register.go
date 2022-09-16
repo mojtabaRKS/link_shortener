@@ -1,9 +1,8 @@
 package auth
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/mojtabaRKS/link_shortener/pkg/validation"
-	"github.com/mojtabaRKS/link_shortener/pkg/util"
+	"fmt"
+	"net/http"
 )
 
 type RegisterRequest struct {
@@ -14,15 +13,15 @@ type RegisterRequest struct {
 }
 
 
+func Register(w http.ResponseWriter, r *http.Request) {
 
-func Register(c *gin.Context) {
+	fmt.Println(r.Body)
+	// errs, request := validation.Validate(c, &RegisterRequest{})
 
-	errs, request := validation.Validate(c, &RegisterRequest{})
+	// if len(errs) != 0 {
+	// 	util.RespondValidationError(c, errs)
+	// 	return
+	// }
 
-	if len(errs) != 0 {
-		util.RespondValidationError(c, errs)
-		return
-	}
-
-		
+	
 }
