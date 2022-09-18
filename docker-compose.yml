@@ -3,27 +3,21 @@ version: "3.8"
 services:
   go:
     restart: always
-    container_name: ${PROJECT_NAME}-go
+    container_name: ${APP_NAME}-go
     ports:
-      - "${WEBSERVER_PORT}:${PROJECT_PORT:-8080}"
+      - "80:${APP_PORT:-8080}"
     build:
-      context: ./go
+      context: .
       dockerfile: Dockerfile
-      args:
-        USER_NAME: $USER_NAME
-        GROUP_NAME: $GROUP_NAME
-        USER_ID: $USER_ID
-        GROUP_ID: $GROUP_ID
-        DOMAIN_DIR: $DOMAIN_DIR
-    working_dir: $DOMAIN_DIR
+    working_dir: /app
     depends_on:
       - db
     volumes:
-      - ./src:$DOMAIN_DIR
+      - .:/app
     command: >
       sh -c "go mod download &&
-             go build -o ./main &&
-             ./main"
+             go build -o ./cmd/link_shortener/main &&
+             ./cmd/link_shortener/main"
   
   db:
     image: postgres:14.1-alpine
