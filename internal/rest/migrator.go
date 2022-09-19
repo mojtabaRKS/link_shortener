@@ -1,4 +1,4 @@
-package webserver
+package rest
 
 import (
 	"github.com/mojtabaRKS/link_shortener/internal/entities"

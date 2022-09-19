@@ -1,4 +1,4 @@
-package webserver
+package rest
 
 import (
 	"fmt"
@@ -6,9 +6,9 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
-	// "github.com/mojtabaRKS/link_shortener/pkg/db"
+	"github.com/mojtabaRKS/link_shortener/pkg/db"
 	"github.com/mojtabaRKS/link_shortener/pkg/env"
-	"github.com/mojtabaRKS/link_shortener/internal/webserver/middlewares"
+	"github.com/mojtabaRKS/link_shortener/internal/rest/middlewares"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
@@ -25,10 +25,10 @@ func init() {
 
 func (app *App) Initilize() {
 	// create database instance
-	// connection := db.Connection{}
-	// app.DB = connection.Load().Conn
+	connection := db.Connection{}
+	app.DB = connection.Load().Conn
 	// create database schema
-	// app.Migrate()
+	app.Migrate()
 	// create http request handler
 	app.Router = mux.NewRouter()
 	// load routes

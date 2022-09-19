@@ -1,8 +1,9 @@
 package auth
 
 import (
-	"fmt"
 	"net/http"
+	"github.com/mojtabaRKS/link_shortener/pkg/validation"
+	// "github.com/mojtabaRKS/link_shortener/pkg/util"
 )
 
 type RegisterRequest struct {
@@ -14,14 +15,16 @@ type RegisterRequest struct {
 
 
 func Register(w http.ResponseWriter, r *http.Request) {
-
-	fmt.Println(r.Body)
-	// errs, request := validation.Validate(c, &RegisterRequest{})
+	
+	// errs, request := validation.Validate(r, &RegisterRequest{})
+	validation.Validate(r, &RegisterRequest{})
 
 	// if len(errs) != 0 {
-	// 	util.RespondValidationError(c, errs)
-	// 	return
+		// util.RespondValidationError(c, errs)
+		// return
 	// }
 
+	// x := r.Body
+	// w.Write(x)
 	
 }
