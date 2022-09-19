@@ -1,9 +1,12 @@
 package validation
 
 import (
+	"encoding/json"
+	"io/ioutil"
+	"log"
+	"net/http"
 	"strings"
 
-	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
 
@@ -11,15 +14,16 @@ var validate *validator.Validate
 
 var errorBag = make(map[string]string)
 
-func Validate(context *gin.Context, s interface{}) (map[string]string, interface{}) {
+func Validate(request *http.Request, s interface{}) (map[string]string, interface{}) {
 	
 	validate = validator.New()
-	
-	err := context.BindJSON(&s)
 
+	body, err := ioutil.ReadAll(request.Body)
 	if err != nil {
-		panic(err)
+		log.Printf("could not read body: %s\n", err)
 	}
+
+	_ = json.Unmarshal(body, &s)
 
 	err = validate.Struct(s)
 	
