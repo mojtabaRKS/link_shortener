@@ -1,16 +1,23 @@
 package auth
 
 import (
-	"fmt"
-
-	"github.com/mojtabaRKS/link_shortener/internal/webserver/controllers/v1/auth"
-	// "github.com/mojtabaRKS/link_shortener/internal/entities"
+	"github.com/mojtabaRKS/link_shortener/internal/entities"
+	"github.com/mojtabaRKS/link_shortener/pkg/db"
 )
 
-func Register(r auth.RegisterRequest) (string, error) {
-	// user := entities.User{}
+func Register(name, username, email, password string) (string, error) {
 
-	fmt.Println("herreeeee")
+	user := entities.User{
+		Name:     name,
+		Email:    email,
+		Username: username,
+	}
 
-	return "user token", nil
+	db.GetInstance().Create(&user)
+
+	return "user.Email", nil
+}
+
+func encryptPassword(pswd string) (string, error) {
+	return "encrypted password",nil
 }
