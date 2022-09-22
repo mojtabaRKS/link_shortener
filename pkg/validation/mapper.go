@@ -10,13 +10,8 @@ import (
 
 func Map(attribute, rule string, vars ...[]interface{}) string {
 
-	wdPath, err := os.Getwd()
-	if err != nil {
-		panic("cant get current working directory !")
-	}
-
-	path :=wdPath + string(os.PathSeparator) +
-		"pkg/lang" +
+	path := "../.."  + string(os.PathSeparator) +
+		"pkg/validation" +
 		string(os.PathSeparator) +
 		os.Getenv("APP_LOCAL") +
 		string(os.PathSeparator) +

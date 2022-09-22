@@ -15,7 +15,7 @@ var validate *validator.Validate
 var errorBag = make(map[string]string)
 
 func Validate(request *http.Request, s interface{}) (map[string]string, interface{}) {
-	
+
 	validate = validator.New()
 
 	body, err := ioutil.ReadAll(request.Body)
@@ -26,12 +26,12 @@ func Validate(request *http.Request, s interface{}) (map[string]string, interfac
 	_ = json.Unmarshal(body, &s)
 
 	err = validate.Struct(s)
-	
+
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {
 			errorBag[err.Field()] = Map(strings.ToLower(err.Field()), err.Tag())
 		}
 	}
-	
+
 	return errorBag, s
 }
